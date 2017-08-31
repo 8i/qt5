@@ -254,27 +254,6 @@
 	url = ../qtpurchasing.git
 	branch = 5.9
 	status = addon
-[submodule "qtcharts"]
-	depends = qtbase
-	recommends = qtdeclarative qtmultimedia
-	path = qtcharts
-	url = ../qtcharts.git
-	branch = 5.9
-	status = addon
-[submodule "qtdatavis3d"]
-	depends = qtbase
-	recommends = qtdeclarative qtmultimedia
-	path = qtdatavis3d
-	url = ../qtdatavis3d.git
-	branch = 5.9
-	status = addon
-[submodule "qtvirtualkeyboard"]
-	depends = qtbase qtdeclarative qtsvg
-	recommends = qtmultimedia qtquickcontrols
-	path = qtvirtualkeyboard
-	url = ../qtvirtualkeyboard.git
-	branch = 5.9
-	status = addon
 [submodule "qtgamepad"]
 	depends = qtbase
 	recommends = qtdeclarative
