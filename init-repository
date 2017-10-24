@@ -208,7 +208,7 @@ sub parse_arguments
 
     %{$self} = (%{$self},
         'alternates'          => "",
-        'branch'              => 0,
+        'branch'              => 1,
         'codereview-username' => "",
         'detach-alternates'   => 0 ,
         'force'               => 0 ,
