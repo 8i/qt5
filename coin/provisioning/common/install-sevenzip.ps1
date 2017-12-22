@@ -35,17 +35,30 @@
 
 # This script installs 7-Zip
 
-$version = "1604"
-$url_cache = "\\ci-files01-hki.intra.qt.io\provisioning\windows\7z" + $version + "-x64.exe"
-$url_official = "http://www.7-zip.org/a/7z" + $version + "-x64.exe"
-$7zPackage = "C:\Windows\Temp\7zip-$version.exe"
-$sha1 = "338A5CC5200E98EDD644FC21807FDBE59910C4D0"
+$version = "16.04"
+$nonDottedVersion = "1604"
+
+if( (is64bitWinHost) -eq 1 ) {
+    $arch = "-x64"
+    $sha1 = "338A5CC5200E98EDD644FC21807FDBE59910C4D0"
+}
+else {
+    $arch = ""
+    $sha1 = "dd1cb1163c5572951c9cd27f5a8dd550b33c58a4"
+}
+
+$url_cache = "\\ci-files01-hki.intra.qt.io\provisioning\windows\7z" + $nonDottedVersion + $arch + ".exe"
+$url_official = "http://www.7-zip.org/a/7z" + $nonDottedVersion + $arch + ".exe"
+$7zPackage = "C:\Windows\Temp\7zip-$nonDottedVersion.exe"
+$7zTargetLocation = "C:\Utils\sevenzip\"
 
 Download $url_official $url_cache $7zPackage
 Verify-Checksum $7zPackage $sha1
-cmd /c "$7zPackage /S /D=C:\Utils\sevenzip\"
+Start-Process -FilePath $7zPackage -ArgumentList "/S","/D=$7zTargetLocation" -Wait
 
 echo "Cleaning $7zPackage.."
 Remove-Item -Recurse -Force "$7zPackage"
+
+Add-Path $7zTargetLocation
 
 echo "7-Zip = $version" >> ~\versions.txt

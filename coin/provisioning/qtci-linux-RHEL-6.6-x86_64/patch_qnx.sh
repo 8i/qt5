@@ -39,7 +39,7 @@
 # A copy of the patch must be in the root of the Coin path in
 # provisioning/qnx/patch-660-4367-RS6069_cpp-headers.zip
 
-set -e
+set -ex
 sha1="57a11ffe4434ad567b3c36f7b828dbb468a9e565"
 
 function InstallZipPackageFromURL {
@@ -47,12 +47,12 @@ function InstallZipPackageFromURL {
     expectedSha1=$2
     targetDirectory=$3
 
-    targetFile=`mktemp` || echo "Failed to create temporary file"
-    wget --tries=5 --waitretry=5 --output-document=$targetFile $url || echo "Failed to download '$url' multiple times"
-    echo "$expectedSha1  $targetFile" | sha1sum --check || echo "Failed to check sha1sum"
+    targetFile=`mktemp`
+    wget --tries=5 --waitretry=5 --output-document=$targetFile $url
+    echo "$expectedSha1  $targetFile" | sha1sum --check
 
-    tempDir=`mktemp -d` || echo "Failed to create temporary directory"
-    /usr/bin/unzip -o -d $tempDir $targetFile || echo "Failed to unzip $url archive"
+    tempDir=`mktemp -d`
+    /usr/bin/unzip -o -d $tempDir $targetFile
     trap "sudo rm -fr $targetFile $tempDir" EXIT
 
     sudo cp -rafv $tempDir/patches/660-4367/target/* /opt/qnx660/target/
@@ -60,5 +60,5 @@ function InstallZipPackageFromURL {
 
 echo "Patching QNX"
 
-baseBinaryPackageURL="http://${COIN_WEBSERVER_ADDRESS}/coin/provisioning/qnx/patch-660-4367-RS6069_cpp-headers.zip"
+baseBinaryPackageURL="http://ci-files01-hki.intra.qt.io/input/qnx/patch-660-4367-RS6069_cpp-headers.zip"
 InstallZipPackageFromURL $baseBinaryPackageURL $sha1 "/opt/qnx660/target/"
